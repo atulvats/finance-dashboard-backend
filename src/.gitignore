@@ -1,0 +1,24 @@
+# ===== Java =====
+target/
+*.class
+*.log
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.iml
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== ENV FILES =====
+.env
+
+# ===== LOCAL CONFIG =====
+application-local.properties
+application-dev.properties
+
+# ===== SECRET FILES =====
+*.key
+*.pem
