@@ -11,26 +11,27 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            // ✅ allow public endpoints
+            .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                .requestMatchers("/users/**").hasRole("ADMIN")
-                .requestMatchers("/records/**").hasAnyRole("ADMIN", "ANALYST")
-                .requestMatchers("/dashboard/**").hasAnyRole("ADMIN", "ANALYST", "VIEWER")
+            // 🔐 secured endpoints
+            .requestMatchers("/users/**").hasRole("ADMIN")
+            .requestMatchers("/records/**").hasAnyRole("ADMIN", "ANALYST")
+            .requestMatchers("/dashboard/**").hasAnyRole("ADMIN", "ANALYST", "VIEWER")
 
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults());
+            .anyRequest().authenticated()
+        )
+        .httpBasic(Customizer.withDefaults());
 
-        return http.build();
-    }
+    return http.build();
+}
 
     // ✅ ADD THIS (VERY IMPORTANT)
     @Bean
