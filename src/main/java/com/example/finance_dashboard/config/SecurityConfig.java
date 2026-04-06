@@ -1,20 +1,15 @@
 package com.example.finance_dashboard.config;
 
-import com.example.finance_dashboard.security.JwtFilter;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class SecurityConfig {
-
-    private final JwtFilter jwtFilter;
-
-    public SecurityConfig(JwtFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,9 +27,30 @@ public class SecurityConfig {
 
                 .anyRequest().authenticated()
             )
-            // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    // ✅ ADD THIS (VERY IMPORTANT)
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new InMemoryUserDetailsManager(
+
+            User.withUsername("admin")
+                .password("{noop}admin123")
+                .roles("ADMIN")
+                .build(),
+
+            User.withUsername("analyst")
+                .password("{noop}analyst123")
+                .roles("ANALYST")
+                .build(),
+
+            User.withUsername("viewer")
+                .password("{noop}viewer123")
+                .roles("VIEWER")
+                .build()
+        );
     }
 }
