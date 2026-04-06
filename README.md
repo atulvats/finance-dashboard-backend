@@ -133,6 +133,12 @@ Authorization: Bearer <token>
 - Environment-based configuration for secure deployment
 - Clean layered architecture (Controller → Service → Repository)
 
+
+## Screenshot:
+![UserDetails](./UserDetails.png)
+![RecordDetails](./RecordDetails.png)
+![DashboardDetails](./DashboardDetails.png)
+
 ## Author
 - Atul Vats
 - Backend Developer | Spring Boot | Java
